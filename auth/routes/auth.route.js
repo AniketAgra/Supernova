@@ -10,7 +10,7 @@ router.post('/login', (req, res) => {
 });
 
 router.post('/register', (req, res) => {
-    // Placeholder for registration logic
+    
     res.json({ message: 'Register endpoint' });
 });
 
