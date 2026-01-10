@@ -1,49 +1,30 @@
-const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongoose = require('mongoose');
+const { MongoMemoryServer } = require('mongodb-memory-server');
 
-let mongoServer;
+let mongo;
 
-/**
- * Connect to the in-memory database.
- */
-const connect = async () => {
-  // Close any existing connections
-  await mongoose.disconnect();
+beforeAll(async () => {
+    // Start in-memory MongoDB
+    mongo = await MongoMemoryServer.create();
+    const uri = mongo.getUri();
 
-  mongoServer = await MongoMemoryServer.create();
-  const uri = mongoServer.getUri();
+    process.env.MONGO_URI = uri; // ensure app's db connector uses this
+    process.env.JWT_SECRET = "test_jwt_secret"; // set a test JWT secret
 
-  await mongoose.connect(uri);
-};
+    await mongoose.connect(uri);
+});
 
-/**
- * Drop database, close the connection and stop mongod.
- */
-const closeDatabase = async () => {
-  if (mongoose.connection.readyState !== 0) {
-    await mongoose.connection.dropDatabase();
+afterEach(async () => {
+    // Cleanup all collections between tests
+    const collections = await mongoose.connection.db.collections();
+    for (let collection of collections) {
+        await collection.deleteMany({});
+    }
+});
+
+afterAll(async () => {
+    // Stop in-memory MongoDB
     await mongoose.connection.close();
-  }
-  
-  if (mongoServer) {
-    await mongoServer.stop();
-  }
-};
+    await mongo.stop();
+});
 
-/**
- * Remove all the data for all db collections.
- */
-const clearDatabase = async () => {
-  const collections = mongoose.connection.collections;
-
-  for (const key in collections) {
-    const collection = collections[key];
-    await collection.deleteMany();
-  }
-};
-
-module.exports = {
-  connect,
-  closeDatabase,
-  clearDatabase
-};
