@@ -32,6 +32,22 @@ const registerUserValidations = [
     respondWIthValidationErrors
 ];
 
+const loginUserValidations = [
+    body('email')
+        .optional()
+        .isEmail()
+        .withMessage('Please provide a valid email address'),
+    body('username')
+        .optional()
+        .isString()
+        .withMessage('Username must be a string'),
+    body('password')
+        .isLength({ min: 6 })
+        .withMessage('Password must be at least 6 characters long'),
+    respondWIthValidationErrors
+];
+
 module.exports = {
-    registerUserValidations
+    registerUserValidations,
+    loginUserValidations
 };
