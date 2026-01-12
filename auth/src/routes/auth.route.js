@@ -12,5 +12,7 @@ router.post('/register', validators.registerUserValidations, authController.regi
 router.post('/login', validators.loginUserValidations, authController.loginUser);
 // Get current user endpoint
 router.get('/me', authMiddleware.authMiddleware, authController.getCurrentUser);
+// Logout endpoint
+router.get('/logout', authController.logoutUser);
 
 module.exports = router;

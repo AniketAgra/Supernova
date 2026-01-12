@@ -1,6 +1,7 @@
 const userModel = require('../models/user.model');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const redis = require('../db/redis');
 
 async function registerUser(req, res) {
     try{
@@ -137,9 +138,29 @@ async function getCurrentUser(req, res) {
     });
 }
 
+async function logoutUser(req, res) {
+    const token = req.cookies.token;
+
+    if (token) {
+        // Optionally, you can blacklist the token in Redis to invalidate it before its expiry
+        await redis.set(`blacklist:${token}`, 'true', 'EX', 7 * 24 * 60 * 60); // Set expiry to match token expiry i.e., 7 days
+    }
+
+    res.clearCookie('token', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'Strict'
+    });
+
+    res.status(200).json({
+        success: true,
+        message: 'User logged out successfully'
+    });
+}
 
 module.exports = {
     registerUser,
     loginUser,
-    getCurrentUser
+    getCurrentUser,
+    logoutUser
 };
