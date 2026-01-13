@@ -14,5 +14,11 @@ router.post('/login', validators.loginUserValidations, authController.loginUser)
 router.get('/me', authMiddleware.authMiddleware, authController.getCurrentUser);
 // Logout endpoint
 router.get('/logout', authController.logoutUser);
+// get user addresses
+router.get('/users/me/addresses', authMiddleware.authMiddleware, authController.getUserAddresses);
+//add new address
+router.post('/users/me/addresses', authMiddleware.authMiddleware, validators.addressValidation, authController.addUserAddress);
+//delete address
+router.delete('/users/me/addresses/:addressId', authMiddleware.authMiddleware, authController.deleteUserAddress);
 
 module.exports = router;
