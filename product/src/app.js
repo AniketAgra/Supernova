@@ -9,4 +9,3 @@ app.use(cookieParser());
 app.use('/api/products', productRoutes);
 
 module.exports = app;
-
