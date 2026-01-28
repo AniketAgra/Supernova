@@ -1,8 +1,6 @@
 const ImageKit = require('imagekit');
 const { v4: uuidv4 } = require("uuid")
 
-
-
 const imagekit = new ImageKit({
     publicKey: process.env.IMAGEKIT_PUBLIC_KEY || 'test_public',
     privateKey: process.env.IMAGEKIT_PRIVATE_KEY || 'test_private',
