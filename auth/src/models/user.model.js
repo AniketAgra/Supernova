@@ -7,7 +7,7 @@ const addressSchema = new mongoose.Schema({
         zip: String,
         country: String,
         isDefault: { type: Boolean, default: false }
-    });
+});
 
 const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },

@@ -31,6 +31,10 @@ const productSchema = new mongoose.Schema({
             id: String
         }
     ],
+    stock: {
+        type:Number,
+        default: 0
+    },
 })
 
 // indexes for efficient querying, it basically creates a text index on title and description for text search, and an index on seller for filtering by seller
