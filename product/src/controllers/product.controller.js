@@ -1,5 +1,6 @@
 const productModel = require('../models/product.model');
 const {uploadImage } = require('../services/imagekit.service');
+const mongoose = require('mongoose');
 
 async function createProduct(req, res) {
     try {
@@ -60,13 +61,16 @@ async function getProductById(req, res) {
     const { id } = req.params;
 
     try {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: 'Invalid product id' });
+        }
+
         const product = await productModel.findById(id);
         if (!product) {
             return res.status(404).json({ message: 'Product not found' });
         }
         return res.status(200).json({
-            message: 'Product retrieved',
-            product: product,
+            data: product,
         });
     } catch (err) {
         console.error('Get product by ID error', err);
