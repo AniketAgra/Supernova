@@ -6,7 +6,6 @@ const addressSchema = new mongoose.Schema({
     state: String,
     zip: String,
     country: String,
-    isDefault: { type: Boolean, default: false }
 });
 
 const orderSchema = new mongoose.Schema({
@@ -26,19 +25,21 @@ const orderSchema = new mongoose.Schema({
                 min: 1,
             },
             price:{
-                type: Number,
-                required: true,
-            },
-            currency:{
-                type: String,
-                required: true,
-                enum: ['USD', 'INR']
+                amount:{
+                    type: Number,
+                    required: true,
+                },
+                currency:{
+                    type: String,
+                    required: true,
+                    enum: ['USD', 'INR']
+                }
             }
         }
     ],
     status:{
         type: String,
-        enum: ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'],
+        enum: [ "PENDING", "CONFIRMED", "CANCELLED", "SHIPPED", "DELIVERED" ],
     },
     totalPrice:{
         amount:{
@@ -51,7 +52,10 @@ const orderSchema = new mongoose.Schema({
             enum: ['USD', 'INR']
         }
     },
-    shippingAddress: addressSchema,
+    shippingAddress: {
+        type: addressSchema,
+        required: true
+    }
 }, { timestamps: true });
 
 const orderModel = mongoose.model('order', orderSchema);
