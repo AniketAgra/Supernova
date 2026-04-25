@@ -5,7 +5,7 @@ const orderModel = require('../../src/models/order.model');
 
 
 describe('PATCH /api/orders/:id/address — Update delivery address prior to payment capture', () => {
-    const orderId = '507f1f77bcf86cd799439012';
+    const orderId = '69e91b0554b563bef65d14e1';
 
     const newAddress = {
         street: '456 Second St',
@@ -19,7 +19,7 @@ describe('PATCH /api/orders/:id/address — Update delivery address prior to pay
 
         const order = await orderModel.create({
             _id: orderId,
-            user: '68bc6369c17579622cbdd9fe',
+            user: '69e91b0554b563bef65d14e1',
             items: [],
             status: 'PENDING',
             totalPrice: {
@@ -60,7 +60,7 @@ describe('PATCH /api/orders/:id/address — Update delivery address prior to pay
 
         const order = await orderModel.create({
             _id: orderId,
-            user: '68bc6369c17579622cbdd9fe',
+            user: '69e91b0554b563bef65d14e1',
             items: [],
             status: 'SHIPPED',
             totalPrice: {
@@ -89,7 +89,7 @@ describe('PATCH /api/orders/:id/address — Update delivery address prior to pay
     it('returns 400 when address is invalid', async () => {
         const order = await orderModel.create({
             _id: orderId,
-            user: '68bc6369c17579622cbdd9fe',
+            user: '69e91b0554b563bef65d14e1',
             items: [],
             status: 'PENDING',
             totalPrice: {

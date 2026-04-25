@@ -13,4 +13,6 @@ router.get('/:id', createAuthMiddleware(["user", "admin"]), orderController.getO
 
 router.post('/:id/cancel', createAuthMiddleware(["user"]), orderController.cancelOrderById);
 
+router.patch('/:id/address', createAuthMiddleware(["user"]), validator.updateAddressValidation, orderController.updateOrderAddress);
+
 module.exports = router;

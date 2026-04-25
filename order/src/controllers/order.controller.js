@@ -156,7 +156,39 @@ async function getOrderById(req, res) {
 }
 
 async function cancelOrderById(req, res) {
-    // Implementation for cancelling an order
+    const user = req.user;
+    const orderId = req.params.id;
+
+    try {
+        const order = await orderModel.findById(orderId)
+
+        if (!order) {
+            return res.status(404).json({ message: "Order not found" });
+        }
+
+        if (order.user.toString() !== user.id) {
+            return res.status(403).json({ message: "Forbidden: You do not have access to this order" });
+        }
+
+        // only PENDING orders can be cancelled
+        if (order.status !== "PENDING") {
+            return res.status(409).json({ message: "Order cannot be cancelled at this stage" });
+        }
+
+        order.status = "CANCELLED";
+        await order.save();
+
+        res.status(200).json({ order });
+    } catch (err) {
+
+        console.error(err);
+
+        res.status(500).json({ message: "Internal server error", error: err.message });
+    }
+}
+
+async function updateOrderAddress(req, res) {
+    // Implementation for updating shipping address of an order
     const user = req.user;
     const orderId = req.params.id;
 
@@ -171,11 +203,17 @@ async function cancelOrderById(req, res) {
         }
 
         if(order.status !== 'PENDING') {
-            return res.status(409).json({ message: 'Order cannot be cancelled at this stage' });
+            return res.status(409).json({ message: 'Shipping address cannot be updated at this stage' });
         }
 
-        order.status = 'CANCELLED';
-        // order.timeline.push({ type: 'CANCELLED', at: new Date() });
+        order.shippingAddress = {
+            street: req.body.shippingAddress.street,
+            city: req.body.shippingAddress.city,    
+            state: req.body.shippingAddress.state,
+            zip: req.body.shippingAddress.pincode,
+            country: req.body.shippingAddress.country,
+        };
+
         await order.save();
 
         res.status(200).json({ order });
@@ -188,5 +226,6 @@ module.exports = {
     createOrder,
     getMyOrders,
     getOrderById,
-    cancelOrderById
+    cancelOrderById,
+    updateOrderAddress
 }

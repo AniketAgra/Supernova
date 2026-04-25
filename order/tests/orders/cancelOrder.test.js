@@ -5,7 +5,7 @@ const orderModel = require('../../src/models/order.model');
 
 
 describe('POST /api/orders/:id/cancel — Buyer-initiated cancel while rules apply', () => {
-    const orderId = '69eb8afbe4750604a54cc2ac';
+    const orderId = '69e91b0554b563bef65d14e1';
 
     beforeEach(async () => {
         await orderModel.deleteMany({});
@@ -53,11 +53,11 @@ describe('POST /api/orders/:id/cancel — Buyer-initiated cancel while rules app
 
         const order = new orderModel({
             _id: orderId,
-            user: '68bc6369c17579622cbdd9fe', // ensure this matches auth user
+            user: '69e91b0554b563bef65d14e1', // ensure this matches auth user
             status: 'SHIPPED',
             items: [
                 {
-                    product: '507f1f77bcf86cd799439021',
+                    product: '696a0f3ba14e979a87d344ee',
                     quantity: 1,
                     price: { amount: 100, currency: 'USD' },
                 },
@@ -87,7 +87,7 @@ describe('POST /api/orders/:id/cancel — Buyer-initiated cancel while rules app
 
         const order = new orderModel({
             _id: orderId,
-            user: '68bc6369c17579622cbdd9fe',
+            user: '69e91b0554b563bef65d14e1',
             items: [],
             status: 'PENDING',
             totalPrice: {

@@ -5,7 +5,7 @@ const orderModel = require('../../src/models/order.model');
 
 
 describe('GET /api/orders/:id — Get order by id with timeline and payment summary', () => {
-    const orderId = '69eb8afbe4750604a54cc2ac'; // sample ObjectId-like
+    const orderId = '69e91b0554b563bef65d14e1'; // sample ObjectId-like
 
     it('returns 200 with order details, timeline, and payment summary', async () => {
 
